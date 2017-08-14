@@ -1,0 +1,9 @@
+# Be sure you can log via SSH before doing this
+# Local commands
+# ssh-keygen
+# ssh-copy-id dfavato@server_ip
+
+passwd -dl root # disable root
+sed -i -e 's/^PasswordAuthentication yes/PasswordAuthentication no/g'
+systemctl reload sshd
+
