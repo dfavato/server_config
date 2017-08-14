@@ -39,7 +39,7 @@ mysql_secure_installation
 systemctl stop mysql
 rsync -av /var/lib/mysql /mnt/"$BLOCK_NAME"
 mv /var/lib/mysql /var/lib/mysql.bak
-sed -i -e 's/datadir=\/var\/lib\/mysql/datadir=\/mnt\/'$BLOCK_NAME'\/mysql/g' /etc/mysql/mysql.conf.d/mysqld.cnf
+sed -i -e 's/^datadir.*=.*\/var\/lib\/mysql/datadir=\/mnt\/'$BLOCK_NAME'\/mysql/g' /etc/mysql/mysql.conf.d/mysqld.cnf
 echo 'alias /var/lib/mysql/ -> /mnt/'$BLOCK_NAME'/mysql/,' >> /etc/apparmor.d/tunables/alias
 systemctl restart apparmor
 mkdir /var/lib/mysql/mysql -p
