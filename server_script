@@ -18,9 +18,9 @@ ufw enable
 # https://www.digitalocean.com/community/tutorials/how-to-use-block-storage-on-digitalocean
 parted /dev/disk/by-id/scsi-0DO_Volume_"$BLOCK_NAME" mklabel gpt
 parted -a opt /dev/disk/by-id/scsi-0DO_Volume_"$BLOCK_NAME" mkpart primary ext4 0% 100%
-mkfs.ext4 /dev/disk/by-id/scsi-0DO_Volume_"$BLOCK_NAME"-part1
-mkdir -p /mnt/"$BLOCK_NAME"-part1
-echo '/dev/disk/by-id/scsi-0DO_Volume_'$BLOCK_NAME'-part1 /mnt/'$BLOCK_NAME'-part1 ext4 defaults,nofail,discard 0 2' | tee -a /etc/fstab
+mkfs.ext4 /dev/disk/by-id/scsi-0DO_Volume_"$BLOCK_NAME"
+mkdir -p /mnt/"$BLOCK_NAME"
+echo '/dev/disk/by-id/scsi-0DO_Volume_'$BLOCK_NAME' /mnt/'$BLOCK_NAME' ext4 defaults,nofail,discard 0 2' | tee -a /etc/fstab
 mount -a
 ##############################################################
 
@@ -30,16 +30,16 @@ echo $DB_PASSWORD > /home/django/db_password
 
 # MariaDB ####################################################
 apt-get update
-apt-get install python3-pip python3-dev mariadb-server libmariadbclient-dev libssl-dev
+apt-get install python3-pip python3-dev mariadb-server
 mysql_secure_installation
 
 # move datadir
 # https://www.digitalocean.com/community/tutorials/how-to-move-a-mysql-data-directory-to-a-new-location-on-ubuntu-16-04
-systemctl stop mysql
-rsync -av /var/lib/mysql /mnt/"$BLOCK_NAME"-part1
+systemctl stop mariadb
+rsync -av /var/lib/mysql /mnt/"$BLOCK_NAME"
 mv /var/lib/mysql /var/lib/mysql.bak
-sed -i -e 's/datadir=\/var\/lib\/mysql/datadir=\/mnt\/'$BLOCK_NAME'-part1\/mysql/g' /etc/mysql/mysql.conf.d/mysqld.cnf
-echo 'alias /var/lib/mysql/ -> /mnt/'$BLOCK_NAME'-part1/mysql/,' >> /etc/apparmor.d/tunables/alias
+sed -i -e 's/datadir=\/var\/lib\/mysql/datadir=\/mnt\/'$BLOCK_NAME'\/mysql/g' /etc/mysql/mysql.conf.d/mysqld.cnf
+echo 'alias /var/lib/mysql/ -> /mnt/'$BLOCK_NAME'/mysql/,' >> /etc/apparmor.d/tunables/alias
 systemctl restart apparmor
 mkdir /var/lib/mysql/mysql -p
 systemctl start mysql
