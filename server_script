@@ -52,6 +52,13 @@ echo "CREATE USER django@localhost IDENTIFIED BY '"$DB_PASSWORD"';" >> sql_init_
 echo "GRANT ALL PRIVILEGES ON django.* TO django@localhost;" >> sql_init_config
 echo "FLUSH PRIVILEGES;" >> sql_init_config
 echo "exit" >> sql_init_config
+echo "Senha root do MySql"
 mysql -u root -p < sql_init_config
 rm sql_init_config
+
+# virtualenv
+# https://docs.python.org/3/library/venv.html
+apt-get install python3-venv
+python3 -m venv /home/django/.virtualenvs/harpia
+source /home/django/.virtualenvs/harpia/bin/activate
 
