@@ -28,14 +28,15 @@ mount -a
 adduser django --gecos "django" --disabled-password
 echo $DB_PASSWORD > /home/django/db_password
 
-# MariaDB ####################################################
+# MySQL ####################################################
+# https://www.digitalocean.com/community/tutorials/how-to-install-mysql-on-ubuntu-16-04
 apt-get update
-apt-get install python3-pip python3-dev mariadb-server
+apt-get install mysql-server
 mysql_secure_installation
 
 # move datadir
 # https://www.digitalocean.com/community/tutorials/how-to-move-a-mysql-data-directory-to-a-new-location-on-ubuntu-16-04
-systemctl stop mariadb
+systemctl stop mysql
 rsync -av /var/lib/mysql /mnt/"$BLOCK_NAME"
 mv /var/lib/mysql /var/lib/mysql.bak
 sed -i -e 's/datadir=\/var\/lib\/mysql/datadir=\/mnt\/'$BLOCK_NAME'\/mysql/g' /etc/mysql/mysql.conf.d/mysqld.cnf
