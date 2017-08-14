@@ -10,8 +10,8 @@ adduser dfavato --gecos "Danilo Favato,,+5531993736788,+553132848160"
 usermod -aG sudo dfavato
 
 # firewall
-sudo ufw allow OpenSSH
-sudo ufw enable
+ufw allow OpenSSH
+ufw enable
 ##############################################################
 
 # configure block storage ####################################
@@ -20,7 +20,7 @@ parted /dev/disk/by-id/scsi-0DO_Volume_"$BLOCK_NAME" mklabel gpt
 parted -a opt /dev/disk/by-id/scsi-0DO_Volume_"$BLOCK_NAME" mkpart primary ext4 0% 100%
 mkfs.ext4 /dev/disk/by-id/scsi-0DO_Volume_"$BLOCK_NAME"-part1
 mkdir -p /mnt/"$BLOCK_NAME"-part1
-echo '/dev/disk/by-id/scsi-0DO_Volume_'$BLOCK_NAME'-part1 /mnt/'$BLOCK_NAME'-part1 ext4 defaults,nofail,discard 0 2' | sudo tee -a /etc/fstab
+echo '/dev/disk/by-id/scsi-0DO_Volume_'$BLOCK_NAME'-part1 /mnt/'$BLOCK_NAME'-part1 ext4 defaults,nofail,discard 0 2' | tee -a /etc/fstab
 mount -a
 ##############################################################
 
