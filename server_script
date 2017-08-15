@@ -31,7 +31,7 @@ echo $DB_PASSWORD > /home/django/db_password
 # MySQL ####################################################
 # https://www.digitalocean.com/community/tutorials/how-to-install-mysql-on-ubuntu-16-04
 apt-get update
-apt-get install mysql-server mysql-client
+apt-get install mysql-server mysql-client python3-dev build-essential
 mysql_secure_installation
 
 # move datadir
